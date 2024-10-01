@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "217543052939",
+    "firebase_url": "https://ly-s-shopping-default-rtdb.firebaseio.com",
+    "project_id": "ly-s-shopping",
+    "storage_bucket": "ly-s-shopping.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217543052939:android:6f5fd40a3324879aa40e8e",
+        "android_client_info": {
+          "package_name": "buysm.smrt.buysmartm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHeID3a8Nf4v3aNO6hDa_tW5aJKOHuDhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217543052939:android:0784fc545810759da40e8e",
+        "android_client_info": {
+          "package_name": "com.buysmt.buysmartmain"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHeID3a8Nf4v3aNO6hDa_tW5aJKOHuDhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217543052939:android:96530460bae54213a40e8e",
+        "android_client_info": {
+          "package_name": "com.example.lyshoppingmain"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHeID3a8Nf4v3aNO6hDa_tW5aJKOHuDhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
