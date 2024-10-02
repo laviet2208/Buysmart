@@ -99,7 +99,7 @@ class _directory_areaState extends State<directory_area> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       child: Padding(
-                        padding: EdgeInsets.only(right: 0),
+                        padding: EdgeInsets.only(right: 10),
                         child: item_product(id: widget.productDirectory.productList[index], productList: widget.productDirectory.productList, event: () {}, beforeWidget: main_screen(),),
                       ),
                       onTap: () {
