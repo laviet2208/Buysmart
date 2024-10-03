@@ -10,6 +10,7 @@ import '../../../data/otherdata/Tool.dart';
 import '../chat_room/chat_room.dart';
 import '../main_screen/main_screen.dart';
 import 'controller/wallet_controller.dart';
+import 'ingredient/Withdrawal_requirements_form/Withdrawal_requirements_choice.dart';
 import 'ingredient/item_history_transaction.dart';
 import 'ingredient/text_line_in_profile.dart';
 import 'ingredient/wallet_appbar.dart';
@@ -151,7 +152,7 @@ class _wallet_infoState extends State<wallet_info> {
                                       showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return change_to_customer_care();
+                                          return Withdrawal_requirements_choice();
                                         },
                                       );
                                     },

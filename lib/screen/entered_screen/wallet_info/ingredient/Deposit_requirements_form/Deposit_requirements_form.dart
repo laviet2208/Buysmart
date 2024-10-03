@@ -186,7 +186,7 @@ class _Deposit_requirements_formState extends State<Deposit_requirements_form> {
                       loading = true;
                     });
                     if (double.parse(moneyController.text.toString()) > 0) {
-                      MoneyRequest monrequest = MoneyRequest(id: '', owner: finaldata.account, status: 'A', createTime: getCurrentTime(), money: double.parse(moneyController.text.toString()), type: 1);
+                      MoneyRequest monrequest = MoneyRequest(id: '', owner: finaldata.account, status: 'A', createTime: getCurrentTime(), money: double.parse(moneyController.text.toString()), type: 1, walletAdd: '');
                       String id = (DateTime.now().hour >= 10 ? DateTime.now().hour.toString() : '0' + DateTime.now().hour.toString()) + (DateTime.now().minute >= 10 ? DateTime.now().minute.toString() : '0' + DateTime.now().minute.toString()) + (DateTime.now().second >= 10 ? DateTime.now().second.toString() : '0' + DateTime.now().second.toString()) + (DateTime.now().day >= 10 ? DateTime.now().day.toString() : '0' + DateTime.now().day.toString()) + (DateTime.now().month >= 10 ? DateTime.now().month.toString() : '0' + DateTime.now().month.toString()) + (DateTime.now().year >= 10 ? DateTime.now().year.toString() : '0' + DateTime.now().year.toString());
                       monrequest.id = 'RQ' + id;
                       DatabaseReference database = FirebaseDatabase.instance.ref("MoneyRequest");
@@ -204,7 +204,7 @@ class _Deposit_requirements_formState extends State<Deposit_requirements_form> {
                   setState(() {
                     loading = true;
                   });
-                  MoneyRequest monrequest = MoneyRequest(id: '', owner: finaldata.account, status: 'A', createTime: getCurrentTime(), money: 0, type: 1);
+                  MoneyRequest monrequest = MoneyRequest(id: '', owner: finaldata.account, status: 'A', createTime: getCurrentTime(), money: 0, type: 1, walletAdd: '');
                   String id = (DateTime.now().hour >= 10 ? DateTime.now().hour.toString() : '0' + DateTime.now().hour.toString()) + (DateTime.now().minute >= 10 ? DateTime.now().minute.toString() : '0' + DateTime.now().minute.toString()) + (DateTime.now().second >= 10 ? DateTime.now().second.toString() : '0' + DateTime.now().second.toString()) + (DateTime.now().day >= 10 ? DateTime.now().day.toString() : '0' + DateTime.now().day.toString()) + (DateTime.now().month >= 10 ? DateTime.now().month.toString() : '0' + DateTime.now().month.toString()) + (DateTime.now().year >= 10 ? DateTime.now().year.toString() : '0' + DateTime.now().year.toString());
                   monrequest.id = 'RQ' + id;
                   if (us10) {

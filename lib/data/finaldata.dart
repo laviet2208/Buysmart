@@ -96,6 +96,8 @@ class finaldata {
     Withdraw: 'Request a withdrawal',
     transacSub: 'The system will transfer you to the customer care department to transact.',
     accountbalance: 'Account balance',
+    Withdraw3: 'fill out the form',
+
   );
 
   static Multi_language vi = Multi_language(
@@ -182,7 +184,7 @@ class finaldata {
     buyitnow: "Wish list",
     addtocart: "Thêm vào giỏ hàng",
     support1: 'Hỗ trợ trực tiếp',
-    support2: 'Nhập tin nhắn ở đây',
+    support2: 'Nhập tin nhắn ở đây', Withdraw3: 'Điền form',
   );
 
   static Multi_language mainLang = en;
