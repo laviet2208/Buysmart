@@ -1,3 +1,4 @@
+import 'package:buysmartm/screen/entered_screen/wallet_info/ingredient/Withdrawal_requirements_form/enter_email_and_password.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,6 @@ class Withdrawal_requirements_form extends StatefulWidget {
 }
 
 class _Withdrawal_requirements_formState extends State<Withdrawal_requirements_form> {
-  bool loading = false;
   TextEditingController moneyController = TextEditingController();
   TextEditingController WalletaddressController = TextEditingController();
   bool us10 = true;
@@ -195,34 +195,27 @@ class _Withdrawal_requirements_formState extends State<Withdrawal_requirements_f
         ),
       ),
       actions: <Widget>[
-        !loading ? TextButton(
+        TextButton(
             onPressed: () async {
               if (WalletaddressController.text.isNotEmpty) {
                 if (us10 || us20 || us50 || us100 || us200 || other) {
                   if (other) {
                     if (moneyController.text.isNotEmpty) {
-                      setState(() {
-                        loading = true;
-                      });
                       if (double.parse(moneyController.text.toString()) > 0) {
                         MoneyRequest monrequest = MoneyRequest(id: '', owner: finaldata.account, status: 'A', createTime: getCurrentTime(), money: double.parse(moneyController.text.toString()), type: 2, walletAdd: '');
                         String id = (DateTime.now().hour >= 10 ? DateTime.now().hour.toString() : '0' + DateTime.now().hour.toString()) + (DateTime.now().minute >= 10 ? DateTime.now().minute.toString() : '0' + DateTime.now().minute.toString()) + (DateTime.now().second >= 10 ? DateTime.now().second.toString() : '0' + DateTime.now().second.toString()) + (DateTime.now().day >= 10 ? DateTime.now().day.toString() : '0' + DateTime.now().day.toString()) + (DateTime.now().month >= 10 ? DateTime.now().month.toString() : '0' + DateTime.now().month.toString()) + (DateTime.now().year >= 10 ? DateTime.now().year.toString() : '0' + DateTime.now().year.toString());
                         monrequest.id = 'RQ' + id;
-                        DatabaseReference database = FirebaseDatabase.instance.ref("MoneyRequest");
-                        await database.child(monrequest.id).set(monrequest.toJson());
-                        setState(() {
-                          loading = false;
-                        });
-                        toastMessage('Submitted successfully, please wait for processing');
-                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return enter_email_and_password(moneyRequest: monrequest);
+                          },
+                        );
                       } else {
                         toastMessage('Please enter amount');
                       }
                     }
                   } else {
-                    setState(() {
-                      loading = true;
-                    });
                     MoneyRequest monrequest = MoneyRequest(id: '', owner: finaldata.account, status: 'A', createTime: getCurrentTime(), money: 0, type: 2, walletAdd: WalletaddressController.text.toString());
                     String id = (DateTime.now().hour >= 10 ? DateTime.now().hour.toString() : '0' + DateTime.now().hour.toString()) + (DateTime.now().minute >= 10 ? DateTime.now().minute.toString() : '0' + DateTime.now().minute.toString()) + (DateTime.now().second >= 10 ? DateTime.now().second.toString() : '0' + DateTime.now().second.toString()) + (DateTime.now().day >= 10 ? DateTime.now().day.toString() : '0' + DateTime.now().day.toString()) + (DateTime.now().month >= 10 ? DateTime.now().month.toString() : '0' + DateTime.now().month.toString()) + (DateTime.now().year >= 10 ? DateTime.now().year.toString() : '0' + DateTime.now().year.toString());
                     monrequest.id = 'RQ' + id;
@@ -241,13 +234,12 @@ class _Withdrawal_requirements_formState extends State<Withdrawal_requirements_f
                     if (us200) {
                       monrequest.money = 200;
                     }
-                    DatabaseReference database = FirebaseDatabase.instance.ref("MoneyRequest");
-                    await database.child(monrequest.id).set(monrequest.toJson());
-                    setState(() {
-                      loading = false;
-                    });
-                    toastMessage('Submitted successfully, please wait for processing');
-                    Navigator.of(context).pop();
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return enter_email_and_password(moneyRequest: monrequest);
+                      },
+                    );
                   }
                 } else {
                   toastMessage('Please enter amount');
@@ -262,7 +254,7 @@ class _Withdrawal_requirements_formState extends State<Withdrawal_requirements_f
                 color: Colors.blueAccent,
               ),
             )
-        ) : CircularProgressIndicator(color: Colors.blueAccent,),
+        ),
 
         TextButton(
             onPressed: () {
