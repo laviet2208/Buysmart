@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:buysmartm/screen/before_screen/preview_screen/preview_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../data/finaldata.dart';
+import '../../../utils/utils.dart';
 import '../../cart_screen/cart_screen.dart';
 import '../../main_screen/main_screen.dart';
 
@@ -42,7 +44,11 @@ class product_view_appbar extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget));
+                    if (finaldata.account.id != '') {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget));
+                    } else {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => preview_screen()));
+                    }
                   },
                 ),
 
@@ -102,7 +108,11 @@ class product_view_appbar extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => cart_screen(beforeWidget: currentWidget)),);
+                        if (finaldata.account.id != '') {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => cart_screen(beforeWidget: currentWidget)),);
+                        } else {
+                          toastMessage('You must Login for use this feature');
+                        }
                       },
                     ),
                   ),

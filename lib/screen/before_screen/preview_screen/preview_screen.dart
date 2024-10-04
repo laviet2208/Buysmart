@@ -1,3 +1,4 @@
+import 'package:buysmartm/data/finaldata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:buysmartm/data/product/ProductDirectory.dart';
@@ -50,6 +51,7 @@ class _preview_screenState extends State<preview_screen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('id: ' + finaldata.account.id);
     if (final_mainpage_data.number_open > 3 || final_mainpage_data.number_open == -1) {
       _refresh();
     } else {
@@ -105,7 +107,13 @@ class _preview_screenState extends State<preview_screen> {
 
                         Padding(
                           padding: EdgeInsets.only(left: 20, right: 20),
-                          child: search_box(),
+                          child: GestureDetector(
+                            child: search_box(),
+                            onTap: () {
+                              toastMessage('Please use your account to continue');
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => signin_screen()));
+                            },
+                          ),
                         ),
 
                         SizedBox(height: 20,),
@@ -140,23 +148,23 @@ class _preview_screenState extends State<preview_screen> {
                 ),
               ),
 
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: GestureDetector(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  onTap: () {
-                    toastMessage('Please use your account to continue');
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => signin_screen()));
-                  },
-                ),
-              ),
+              // Positioned(
+              //   top: 0,
+              //   bottom: 0,
+              //   left: 0,
+              //   right: 0,
+              //   child: GestureDetector(
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         color: Colors.transparent,
+              //       ),
+              //     ),
+              //     onTap: () {
+              //       toastMessage('Please use your account to continue');
+              //       Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => signin_screen()));
+              //     },
+              //   ),
+              // ),
 
               Positioned(
                 bottom: 10,

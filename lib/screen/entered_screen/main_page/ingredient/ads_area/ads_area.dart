@@ -3,6 +3,9 @@ import 'package:buysmartm/screen/entered_screen/main_page/ingredient/ads_area/it
 import 'package:buysmartm/screen/entered_screen/main_screen/main_screen.dart';
 import 'package:buysmartm/screen/entered_screen/product_view_screen/product_view_screen.dart';
 import '../../../../../data/AdsData/AdsData.dart';
+import '../../../../../data/finaldata.dart';
+import '../../../../before_screen/signin_screen/signin_screen.dart';
+import '../../../../utils/utils.dart';
 
 class ads_area extends StatelessWidget {
   final List<AdsData> adsList;
@@ -25,7 +28,12 @@ class ads_area extends StatelessWidget {
                 child: item_ads(adsData: adsList[index], url: imgList[index],),
               ),
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => product_view_screen(id: adsList[index].productId, beforeWidget: main_screen())),);
+                if(finaldata.account.id != '') {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => product_view_screen(id: adsList[index].productId, beforeWidget: main_screen())),);
+                } else {
+                  toastMessage('Please use your account to continue');
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => signin_screen()));
+                }
               },
             );
           },

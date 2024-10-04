@@ -4,6 +4,9 @@ import 'package:buysmartm/data/finaldata.dart';
 import 'package:buysmartm/screen/entered_screen/cart_screen/cart_screen.dart';
 import 'package:buysmartm/screen/entered_screen/main_screen/main_screen.dart';
 
+import '../../../before_screen/signin_screen/signin_screen.dart';
+import '../../../utils/utils.dart';
+
 class slogan_and_cart extends StatelessWidget {
   const slogan_and_cart({super.key});
 
@@ -65,7 +68,12 @@ class slogan_and_cart extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => cart_screen(beforeWidget: main_screen())),);
+                        if(finaldata.account.id != '') {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => cart_screen(beforeWidget: main_screen())),);
+                        } else {
+                          toastMessage('Please use your account to continue');
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => signin_screen()));
+                        }
                       },
                     ),
                   ),

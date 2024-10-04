@@ -1,7 +1,10 @@
+import 'package:buysmartm/screen/before_screen/preview_screen/preview_screen.dart';
+import 'package:buysmartm/screen/entered_screen/main_screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:buysmartm/screen/entered_screen/product_view_screen/ingredient/product_view_appbar.dart';
 
+import '../../../data/finaldata.dart';
 import '../../../data/otherdata/Tool.dart';
 import '../../../data/product/Product.dart';
 import 'ingredient/action_button.dart';
@@ -167,7 +170,12 @@ class _product_view_screenState extends State<product_view_screen> {
         ),
       ),
       onWillPop: () async {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget.beforeWidget));
+        if(finaldata.account.id != '') {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget.beforeWidget));
+        } else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => preview_screen()));
+        }
+
         return true;
       },
     );

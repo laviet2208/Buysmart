@@ -1,7 +1,9 @@
+import 'package:buysmartm/screen/before_screen/preview_screen/preview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:buysmartm/data/product/ProductDirectory.dart';
 
+import '../../../data/finaldata.dart';
 import '../main_page/ingredient/directory_area/item_product/item_product.dart';
 import '../product_view_screen/product_view_screen.dart';
 import 'ingredient/product_type_viewall_appbar.dart';
@@ -9,7 +11,8 @@ import 'ingredient/product_type_viewall_appbar.dart';
 class product_directory_viewall extends StatefulWidget {
   final ProductDirectory productDirectory;
   final Widget beforeWidget;
-  const product_directory_viewall({super.key, required this.productDirectory, required this.beforeWidget});
+  final List<String> productShow;
+  const product_directory_viewall({super.key, required this.productDirectory, required this.beforeWidget, required this.productShow});
 
   @override
   State<product_directory_viewall> createState() => _product_directory_viewallState();
@@ -25,7 +28,7 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
   }
 
   Future<void> _loadMoreItems() async {
-    if (_items.length >= widget.productDirectory.productList.length) {
+    if (_items.length >= widget.productShow.length) {
       return; // Đã tải hết các phần tử
     }
 
@@ -38,7 +41,7 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
 
     setState(() {
       int nextIndex = _items.length;
-      int loadCount = (widget.productDirectory.productList.length - nextIndex) < 10 ? (widget.productDirectory.productList.length - nextIndex) : 10;
+      int loadCount = (widget.productShow.length - nextIndex) < 10 ? (widget.productShow.length - nextIndex) : 10;
       _items.addAll(List.generate(loadCount, (index) => nextIndex + index));
       _isLoading = false;
     });
@@ -97,12 +100,12 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
                     child: RefreshIndicator(
                       onRefresh: _refresh,
                       child: Container(
-                        child: widget.productDirectory.productList.length != 0 ? ListView(
+                        child: widget.productShow.length != 0 ? ListView(
                           controller: _scrollController,
                           children: [
                             SizedBox(height: 10,),
 
-                            widget.productDirectory.productList.length != 0 ? Container(
+                            widget.productShow.length != 0 ? Container(
                               child: Padding(
                                 padding: EdgeInsets.only(left: 15, right: 15),
                                 child: GridView.builder(
@@ -114,13 +117,13 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
                                     crossAxisSpacing: 15, // khoảng cách giữa các cột
                                     childAspectRatio: 2/3,
                                   ),
-                                  itemCount: _items.length + (_isLoading && _items.length < widget.productDirectory.productList.length ? 1 : 0),
+                                  itemCount: _items.length + (_isLoading && _items.length < widget.productShow.length ? 1 : 0),
                                   itemBuilder: (context, index) {
                                     if (index == _items.length) {
                                       return Container(alignment: Alignment.center ,child: SpinKitFoldingCube(color: Color.fromARGB(255, 255, 190, 93), size: 30,),);
                                     }
                                     return GestureDetector(
-                                      child: item_product(id: widget.productDirectory.productList[index], productList: widget.productDirectory.productList, event: () {setState(() {});}, beforeWidget: widget,),
+                                      child: item_product(id: widget.productShow[index], productList: widget.productShow, event: () {setState(() {});}, beforeWidget: widget,),
                                       onTap: () {
                                         // Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_view_screen(id: widget.productDirectory.productList[index], beforeWidget: widget)));
                                       },
@@ -143,7 +146,11 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
         ),
       ),
       onWillPop: () async {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget.beforeWidget));
+        if (finaldata.account.id != '') {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget.beforeWidget));
+        } else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => preview_screen()));
+        }
         return true;
       },
     );

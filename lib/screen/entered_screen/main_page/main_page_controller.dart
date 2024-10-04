@@ -50,6 +50,13 @@ class main_page_controller {
     return ProductDirectory.fromJson(data);
   }
 
+  static Future<int> get_product_status(String id) async {
+    final reference = FirebaseDatabase.instance.ref();
+    DatabaseEvent snapshot = await reference.child('productList').child(id).child('showStatus').once();
+    final dynamic data = snapshot.snapshot.value;
+    return int.parse(data.toString());
+  }
+
   static Future<String> getImageURL(String path) async {
     try {
       final ref = FirebaseStorage.instance.ref().child(path);

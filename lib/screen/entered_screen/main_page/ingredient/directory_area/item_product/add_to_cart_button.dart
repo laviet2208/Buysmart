@@ -1,3 +1,4 @@
+import 'package:buysmartm/data/finaldata.dart';
 import 'package:flutter/material.dart';
 import 'package:buysmartm/data/product/Product.dart';
 import 'package:buysmartm/screen/entered_screen/main_page/ingredient/directory_area/item_product/add_to_cart_dialog.dart';
@@ -39,12 +40,17 @@ class _add_to_cart_buttonState extends State<add_to_cart_button> {
         ),
       ),
       onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return add_to_cart_dialog(product: widget.product);
-          },
-        );
+        if (finaldata.account.id != '') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return add_to_cart_dialog(product: widget.product);
+            },
+          );
+        } else {
+          toastMessage('You must login for use this feature');
+        }
+
       },
     );
   }

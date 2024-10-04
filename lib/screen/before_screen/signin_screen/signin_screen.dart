@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:buysmartm/screen/before_screen/signin_screen/ingredient/forgot_password_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:buysmartm/data/finaldata.dart';
 import 'package:buysmartm/screen/before_screen/preview_screen/preview_screen.dart';
@@ -105,18 +106,28 @@ class _signin_screenState extends State<signin_screen> {
 
               Padding(
                 padding: EdgeInsets.only(left: 25, right: 25),
-                child: Container(
-                  height: 20,
-                  alignment: Alignment.centerRight,
-                  child: AutoSizeText(
-                    finaldata.mainLang.Forgotpassword,
-                    style: TextStyle(
-                      fontFamily: 'muli',
-                      fontWeight: FontWeight.normal,
-                      fontSize: 100,
-                      color: Colors.white,
+                child: GestureDetector(
+                  child: Container(
+                    height: 20,
+                    alignment: Alignment.centerRight,
+                    child: AutoSizeText(
+                      finaldata.mainLang.Forgotpassword,
+                      style: TextStyle(
+                        fontFamily: 'muli',
+                        fontWeight: FontWeight.normal,
+                        fontSize: 100,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return forgot_password_dialog();
+                      },
+                    );
+                  },
                 ),
               ),
 

@@ -1,3 +1,4 @@
+import 'package:buysmartm/screen/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../data/finaldata.dart';
@@ -32,7 +33,11 @@ class action_button extends StatelessWidget {
                     backgroundColor: WidgetStatePropertyAll<Color>(Color.fromARGB(255, 243, 175, 74)),
                   ),
                   onPressed: () {
-
+                    if (finaldata.account.id != '') {
+                      toastMessage('Add success');
+                    } else {
+                      toastMessage('You must Login to use this feature');
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -64,8 +69,12 @@ class action_button extends StatelessWidget {
                     backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
                   ),
                   onPressed: () {
-                    product_view_controller.add_to_cart_handle(product, number);
-                    print('number:: ' + (finaldata.cartList.map((e) => e.number.toString()).toString()));
+                    if (finaldata.account.id != '') {
+                      product_view_controller.add_to_cart_handle(product, number);
+                      print('number:: ' + (finaldata.cartList.map((e) => e.number.toString()).toString()));
+                    } else {
+                      toastMessage('You must Login to use this feature');
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 5),

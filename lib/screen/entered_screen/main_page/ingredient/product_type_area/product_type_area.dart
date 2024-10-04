@@ -1,4 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:buysmartm/data/finaldata.dart';
+import 'package:buysmartm/screen/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:buysmartm/screen/entered_screen/main_screen/main_screen.dart';
 import 'package:buysmartm/screen/entered_screen/product_viewall/product_type_viewall.dart';
@@ -56,7 +58,11 @@ class _product_type_areaState extends State<product_type_area> {
                 return GestureDetector(
                   child: item_product_type(productType: widget.typeList[index]),
                   onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.typeList[index], beforeWidget: main_screen())));
+                    if (finaldata.account.id != '') {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.typeList[index], beforeWidget: main_screen())));
+                    } else {
+                      toastMessage('You must login for use this feature');
+                    }
                   },
                 );
               },

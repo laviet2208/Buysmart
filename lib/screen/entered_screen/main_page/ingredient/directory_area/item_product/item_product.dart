@@ -36,18 +36,22 @@ class _item_productState extends State<item_product> {
     DatabaseEvent snapshot = await reference.child("productList").child(widget.id).once();
     final dynamic data = snapshot.snapshot.value;
     product = Product.fromJson(data);
-    if (product.showStatus == 0) {
-      widget.productList.remove(product.id);
-      widget.event();
-      setState(() {
+    // if (product.showStatus == 0) {
+    //   // widget.productList.remove(product.id);
+    //   // widget.event();
+    //   // setState(() {
+    //   //
+    //   // });
+    // } else {
+    //   _getImageURL();
+    //   setState(() {
+    //
+    //   });
+    // }
+    _getImageURL();
+    setState(() {
 
-      });
-    } else {
-      _getImageURL();
-      setState(() {
-
-      });
-    }
+    });
   }
 
   @override
