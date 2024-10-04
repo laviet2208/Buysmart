@@ -23,7 +23,7 @@ class _loading_screenState extends State<loading_screen> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    Loading_Controller.isLogin(context);
+    Loading_Controller.isLoginWeb(context);
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(

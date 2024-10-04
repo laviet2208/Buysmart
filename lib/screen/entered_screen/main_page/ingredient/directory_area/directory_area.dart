@@ -1,4 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:buysmartm/data/product/Product.dart';
+import 'package:buysmartm/screen/before_screen/preview_screen/preview_screen.dart';
+import 'package:buysmartm/screen/entered_screen/main_page/ingredient/directory_area/item_product/item_product_loading.dart';
+import 'package:buysmartm/screen/entered_screen/main_page/ingredient/directory_area/item_product/item_product_type_1.dart';
 import 'package:buysmartm/screen/entered_screen/main_page/main_page_controller.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +16,7 @@ import 'package:buysmartm/screen/entered_screen/product_viewall/product_director
 import '../../../../../data/final_mainpage_data/final_mainpage_data.dart';
 import '../../../../../data/finaldata.dart';
 import '../../../../utils/utils.dart';
+import '../../../product_viewall/product_directory_viewall_controller.dart';
 
 class directory_area extends StatefulWidget {
   final ProductDirectory productDirectory;
@@ -22,25 +27,13 @@ class directory_area extends StatefulWidget {
 }
 
 class _directory_areaState extends State<directory_area> {
-  List<String> productShow = [];
-
-  // Future<int> get_product_status(String id) async {
-  //   final reference = FirebaseDatabase.instance.ref();
-  //   DatabaseEvent snapshot = await reference.child('productList').child(id).child('showStatus').once();
-  //   final dynamic data = snapshot.snapshot.value;
-  //   return int.parse(data.toString());
-  // }
-
-  Future<void> getProductList() async {
-    for (int i = 0; i < widget.productDirectory.productList.length; i++) {
-      int showStatus = await main_page_controller.get_product_status(widget.productDirectory.productList[i]);
-      if (showStatus == 1) {
-        productShow.add(widget.productDirectory.productList[i]);
-      }
-      setState(() {
-
-      });
-    }
+  List<Product> productList = [];
+  bool loading = false;
+  Future<void> _refresh() async {
+    setState(() {
+      loading = true;
+    });
+    productList = await product_directory_viewall_controller.get_product_list_by_direct_id(widget.productDirectory.id, () {setState(() {loading = false;});});
     setState(() {
 
     });
@@ -50,10 +43,7 @@ class _directory_areaState extends State<directory_area> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // if (final_mainpage_data.number_open > 3 || final_mainpage_data.number_open == -1) {
-    //   getProductList();
-    // }
-    getProductList();
+    _refresh();
   }
 
   @override
@@ -115,7 +105,7 @@ class _directory_areaState extends State<directory_area> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_directory_viewall(productDirectory: widget.productDirectory, beforeWidget: main_screen(), productShow: productShow,)));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_directory_viewall(productDirectory: widget.productDirectory, beforeWidget: main_screen(),)));
                     },
                   ),
 
@@ -131,22 +121,32 @@ class _directory_areaState extends State<directory_area> {
               child: Container(
                 height: ((MediaQuery.of(context).size.width - 60)/2) * 1.5 + 8,
                 alignment: Alignment.center,
-                child: productShow.length != 0 ? ListView.builder(
-                  itemCount: productShow.length,
+                child: !loading ? (productList.length != 0 ? ListView.builder(
+                  itemCount: productList.length,
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.only(left: 5, top: 4, bottom: 4),
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       child: Padding(
                         padding: EdgeInsets.only(right: 10),
-                        child: item_product(id: productShow[index], productList: productShow, event: () {}, beforeWidget: main_screen(),),
+                        child: item_product_type_1(product: productList[index],),
                       ),
                       onTap: () {
-                        // Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_view_screen(id: widget.productDirectory.productList[index], beforeWidget: main_screen())));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_view_screen(id: productList[index].id, beforeWidget: finaldata.account.id != '' ? main_screen() : preview_screen())));
                       },
                     );
                   },
-                ) : Text('There is not any products in here!', style: TextStyle(fontSize: 12, color: Colors.grey),),
+                ) : Text('There is not any products in here!', style: TextStyle(fontSize: 12, color: Colors.grey),)) : ListView.builder(
+                  itemCount: 2,
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(left: 5, top: 4, bottom: 4),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: item_product_loading(),
+                    );
+                  },
+                ),
               ),
             ),
 

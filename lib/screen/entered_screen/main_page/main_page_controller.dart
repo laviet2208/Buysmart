@@ -52,7 +52,9 @@ class main_page_controller {
 
   static Future<int> get_product_status(String id) async {
     final reference = FirebaseDatabase.instance.ref();
-    DatabaseEvent snapshot = await reference.child('productList').child(id).child('showStatus').once();
+    DatabaseEvent snapshot = await reference.child('productList').child(id).child('showStatus').once().catchError((error) {
+      print("Something went wrong: ${error.message}");
+    });
     final dynamic data = snapshot.snapshot.value;
     return int.parse(data.toString());
   }

@@ -32,7 +32,25 @@ class product_directory_viewall_controller {
 
   static Future<List<Product>> get_product_list_by_direct_id(String id, VoidCallback event) async {
     final reference = FirebaseDatabase.instance.ref();
-    DatabaseEvent snapshot = await reference.child("productList").orderByChild('productDirectory').equalTo(id).once();
+    DatabaseEvent snapshot = await reference.child("productList").orderByChild('directoryList/0').equalTo(id).once();
+    print('Gọi hàm lấy type thành công');
+    final dynamic data = snapshot.snapshot.value;
+    List<Product> dataList = [];
+    if (data != null) {
+      data.forEach((key, value) {
+        Product product = Product.fromJson(value);
+        if (product.showStatus != 0) {
+          dataList.add(product);
+          event();
+        }
+      });
+    }
+    return dataList;
+  }
+
+  static Future<List<Product>> get_product_list_by_direct_id1(String id, VoidCallback event) async {
+    final reference = FirebaseDatabase.instance.ref();
+    DatabaseEvent snapshot = await reference.child("productList").orderByChild('directoryList/0').equalTo(id).once();
     print('Gọi hàm lấy type thành công');
     final dynamic data = snapshot.snapshot.value;
     List<Product> dataList = [];

@@ -1,49 +1,35 @@
 import 'package:buysmartm/screen/before_screen/preview_screen/preview_screen.dart';
+import 'package:buysmartm/screen/entered_screen/product_viewall/product_directory_viewall_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:buysmartm/data/product/ProductDirectory.dart';
 
 import '../../../data/finaldata.dart';
+import '../../../data/product/Product.dart';
 import '../main_page/ingredient/directory_area/item_product/item_product.dart';
+import '../main_page/ingredient/directory_area/item_product/item_product_type_1.dart';
 import '../product_view_screen/product_view_screen.dart';
 import 'ingredient/product_type_viewall_appbar.dart';
 
 class product_directory_viewall extends StatefulWidget {
   final ProductDirectory productDirectory;
   final Widget beforeWidget;
-  final List<String> productShow;
-  const product_directory_viewall({super.key, required this.productDirectory, required this.beforeWidget, required this.productShow});
+  const product_directory_viewall({super.key, required this.productDirectory, required this.beforeWidget,});
 
   @override
   State<product_directory_viewall> createState() => _product_directory_viewallState();
 }
 
 class _product_directory_viewallState extends State<product_directory_viewall> {
-  ScrollController _scrollController = ScrollController();
-  List<int> _items = List.generate(10, (index) => index); // Khởi tạo với 10 phần tử đầu tiên
-  bool _isLoading = false;
-
+  List<Product> productList = [];
+  bool loading = false;
   Future<void> _refresh() async {
-
-  }
-
-  Future<void> _loadMoreItems() async {
-    if (_items.length >= widget.productShow.length) {
-      return; // Đã tải hết các phần tử
-    }
-
     setState(() {
-      _isLoading = true;
+      loading = true;
     });
-
-    // Giả lập thời gian tải dữ liệu
-    await Future.delayed(Duration(seconds: 2));
-
+    productList = await product_directory_viewall_controller.get_product_list_by_direct_id(widget.productDirectory.id, () {setState(() {loading = false;});});
     setState(() {
-      int nextIndex = _items.length;
-      int loadCount = (widget.productShow.length - nextIndex) < 10 ? (widget.productShow.length - nextIndex) : 10;
-      _items.addAll(List.generate(loadCount, (index) => nextIndex + index));
-      _isLoading = false;
+
     });
   }
 
@@ -51,11 +37,7 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent && !_isLoading) {
-        _loadMoreItems();
-      }
-    });
+    _refresh();
   }
 
   @override
@@ -96,16 +78,16 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
                     title: product_type_viewall_appbar(title: widget.productDirectory.name, beforeWidget: widget.beforeWidget, currentWidget: widget,),
                   ),
                   backgroundColor: Colors.transparent,
-                  body: Container(
+                  body: !loading ? Container(
                     child: RefreshIndicator(
                       onRefresh: _refresh,
                       child: Container(
-                        child: widget.productShow.length != 0 ? ListView(
-                          controller: _scrollController,
+                        alignment: Alignment.center,
+                        child: productList.length != 0 ? ListView(
                           children: [
                             SizedBox(height: 10,),
 
-                            widget.productShow.length != 0 ? Container(
+                            Container(
                               child: Padding(
                                 padding: EdgeInsets.only(left: 15, right: 15),
                                 child: GridView.builder(
@@ -117,28 +99,25 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
                                     crossAxisSpacing: 15, // khoảng cách giữa các cột
                                     childAspectRatio: 2/3,
                                   ),
-                                  itemCount: _items.length + (_isLoading && _items.length < widget.productShow.length ? 1 : 0),
+                                  itemCount: productList.length,
                                   itemBuilder: (context, index) {
-                                    if (index == _items.length) {
-                                      return Container(alignment: Alignment.center ,child: SpinKitFoldingCube(color: Color.fromARGB(255, 255, 190, 93), size: 30,),);
-                                    }
                                     return GestureDetector(
-                                      child: item_product(id: widget.productShow[index], productList: widget.productShow, event: () {setState(() {});}, beforeWidget: widget,),
+                                      child: item_product_type_1(product: productList[index]),
                                       onTap: () {
-                                        // Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_view_screen(id: widget.productDirectory.productList[index], beforeWidget: widget)));
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_view_screen(id: productList[index].id, beforeWidget: widget)));
                                       },
                                     );
                                   },
                                 ),
                               ),
-                            ) : Container(height: height - 10, alignment: Alignment.center, child: Text('There is not any products in here!', style: TextStyle(fontSize: 12, color: Colors.black),),),
+                            ),
 
                             SizedBox(height: 30,),
                           ],
                         ) : Text('There is not any products in here!', style: TextStyle(fontSize: 12, color: Colors.black),),
                       ),
                     ),
-                  ),
+                  ) : Container(alignment: Alignment.center ,child: SpinKitFoldingCube(color: Color.fromARGB(255, 255, 190, 93), size: 30,),),
                 ),
               ),
             ],
@@ -146,11 +125,7 @@ class _product_directory_viewallState extends State<product_directory_viewall> {
         ),
       ),
       onWillPop: () async {
-        if (finaldata.account.id != '') {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget.beforeWidget));
-        } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => preview_screen()));
-        }
+        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => widget.beforeWidget));
         return true;
       },
     );

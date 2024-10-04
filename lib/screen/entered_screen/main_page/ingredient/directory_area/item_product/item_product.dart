@@ -201,6 +201,7 @@ class _item_productState extends State<item_product> {
         ),
       ),
       onTap: () {
+        print('Số lượng trong list: ' + widget.productList.length.toString());
         Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_view_screen(id: product.id, beforeWidget: widget.beforeWidget)));
       },
     );
