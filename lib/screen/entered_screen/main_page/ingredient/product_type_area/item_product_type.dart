@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:buysmartm/data/product/ProductType.dart';
 
 import '../../../../../data/finaldata.dart';
+import '../../../../before_screen/preview_screen/preview_screen.dart';
 import '../../../../utils/utils.dart';
 import '../../../main_screen/main_screen.dart';
 import '../../../product_viewall/product_type_viewall.dart';
@@ -115,11 +116,7 @@ class _item_product_typeState extends State<item_product_type> {
         ),
       ),
       onTap: () {
-        if (finaldata.account.id != '') {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.productType, beforeWidget: main_screen())));
-        } else {
-          toastMessage('You must login for use this feature');
-        }
+        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.productType, beforeWidget: finaldata.account.id != '' ? main_screen() : preview_screen())));
       },
     );
   }

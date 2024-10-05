@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:buysmartm/screen/entered_screen/main_screen/main_screen.dart';
 import 'package:buysmartm/screen/entered_screen/product_viewall/product_type_viewall.dart';
 import '../../../../../data/product/ProductType.dart';
+import '../../../../before_screen/preview_screen/preview_screen.dart';
 import 'item_product_type.dart';
 
 class product_type_area extends StatefulWidget {
@@ -39,7 +40,7 @@ class _product_type_areaState extends State<product_type_area> {
                     child: GestureDetector(
                       child: item_product_type(productType: widget.typeList[index]),
                       onTap: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.typeList[index], beforeWidget: main_screen())));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.typeList[index], beforeWidget: finaldata.account.id != '' ? main_screen() : preview_screen())));
                       },
                     ),
                   );
@@ -58,11 +59,7 @@ class _product_type_areaState extends State<product_type_area> {
                 return GestureDetector(
                   child: item_product_type(productType: widget.typeList[index]),
                   onTap: () {
-                    if (finaldata.account.id != '') {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.typeList[index], beforeWidget: main_screen())));
-                    } else {
-                      toastMessage('You must login for use this feature');
-                    }
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => product_type_viewall(productType: widget.typeList[index], beforeWidget: finaldata.account.id != '' ? main_screen() : preview_screen())));
                   },
                 );
               },
